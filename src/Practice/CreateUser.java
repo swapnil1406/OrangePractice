@@ -1,17 +1,18 @@
 package Practice;
 
-import static org.junit.Assert.*;
-
 import java.time.Duration;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+
+import ObjectRepositories.AdminPage;
+import ObjectRepositories.HomePage;
+import ObjectRepositories.LoginPage;
 
 public class CreateUser {
 	
@@ -29,48 +30,39 @@ public class CreateUser {
 	
 	@Test
 	public void test() {
-		String userId = "Admin";
+		
+		String userName = "Admin";
 		String userPassword = "admin123";
 		
-		WebElement username = driver.findElement(By.id("txtUsername"));
-		username.sendKeys(userId);
+		LoginPage olp = new LoginPage(driver);
+		olp.userNameText().sendKeys(userName);
+		olp.passwordText().sendKeys(userPassword);
+		olp.loginButton().click();
 		
-		WebElement password = driver.findElement(By.id("txtPassword"));
-		password.sendKeys(userPassword);
+		HomePage hp = new HomePage(driver);
+		hp.adminLink().click();
 		
-		WebElement login = driver.findElement(By.id("btnLogin"));
-		login.click();
-		
-		WebElement adminLink = driver.findElement(By.id("menu_admin_viewAdminModule"));
-		adminLink.click();
-		
-		WebElement addUserButton = driver.findElement(By.id("btnAdd"));
-		addUserButton.click();
+		AdminPage adm = new AdminPage(driver);
+		adm.addUserButton().click();
 		
 		String userType = "1";
-		WebElement staticDropdown = driver.findElement(By.id("systemUser_userType"));
+		WebElement staticDropdown = adm.userRoleScroll();
 		Select dropdown1 = new Select(staticDropdown);
 		dropdown1.selectByValue(userType);
 		
-		String employeeName = "Test Admin 2";
-		String employeeUserName = "sysadmin";
+		String employeeName = "Admin A";
+		String employeeUserName = "sysadmin1";
 		String employeePassword = "admin123";
 		String employeeConfirmedPassword = "admin123";
 		
-		WebElement employeeNameTextBox = driver.findElement(By.id("systemUser_employeeName_empName"));
-		employeeNameTextBox.sendKeys(employeeName);
+		adm.employeeNameTextBox().sendKeys(employeeName);
+		adm.employeeUserNameTextBox().sendKeys(employeeUserName);
+		adm.employeePasswordTextBox().sendKeys(employeePassword);
+		adm.employeeConfirmedPasswordTextBox().sendKeys(employeeConfirmedPassword);
+		adm.saveButton().click();
 		
-		WebElement employeeUserNameTextBox = driver.findElement(By.id("systemUser_userName"));
-		employeeUserNameTextBox.sendKeys(employeeUserName);
-		
-		WebElement employeePasswordTextBox = driver.findElement(By.id("systemUser_password"));
-		employeePasswordTextBox.sendKeys(employeePassword);
-		
-		WebElement employeeConfirmedPasswordTextBox = driver.findElement(By.id("systemUser_confirmPassword"));
-		employeeConfirmedPasswordTextBox.sendKeys(employeeConfirmedPassword);
-		
-		WebElement saveButton = driver.findElement(By.id("btnSave"));
-		saveButton.click();
+		hp.WelcomeLink().click();
+		hp.LogoutLink().click();
 		
 	}
 
